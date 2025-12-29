@@ -29,8 +29,8 @@ public :
 
 class ShippingStrategy {
 public:
-    virtual ~ShippingStrategy() {}
     virtual double calculateCost(const Order& order) = 0;
+    virtual ~ShippingStrategy() {}
 };
 
 

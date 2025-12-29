@@ -114,3 +114,5 @@ int main() {
 
 // Note here at last moment , mario is having reference to
 // starPowerUp so only its destructor is called.
+
+// check when declared without new and statically then how things work.
