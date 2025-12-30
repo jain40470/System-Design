@@ -76,3 +76,5 @@ int main() {
 
     return 0;
 }
+
+// slly you can create for lazy initizlaition and remote proxy seperat efiles.
