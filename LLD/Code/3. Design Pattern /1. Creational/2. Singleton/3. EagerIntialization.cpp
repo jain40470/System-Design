@@ -21,7 +21,9 @@ EagerSingleton* EagerSingleton :: instance = new EagerSingleton();
 
 
 class BillPughSingleton {
+
 private:
+
     BillPughSingleton() {}
 
 public:

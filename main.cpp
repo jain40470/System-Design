@@ -1,78 +1,77 @@
-#include <iostream>
-#include <string>
+#include "bits/stdc++.h"
+#define nline cout<<'\n';
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
 
 using namespace std;
 
-// Interface for Document Reader
-class IDocumentReader {
-public:
-    virtual void unlockPDF(string filePath, string password) = 0;
-    virtual ~IDocumentReader() = default;
-};
 
-// Concrete Class: Reads the PDF (simulated)
-class RealDocumentReader : public IDocumentReader {
+class EagerSingleton {
+private:
+    static EagerSingleton* instance;
+
+    EagerSingleton() {}
+
 public:
-    void unlockPDF(string filePath, string password) override {
-        cout << "[RealDocumentReader] Unlocking PDF at: " << filePath << "\n";
-        cout << "[RealDocumentReader] PDF unlocked successfully with password: " << password << "\n";
-        cout << "[RealDocumentReader] Displaying PDF content...\n";
+    static EagerSingleton* getInstance() {
+        return instance;
     }
 };
 
-// User class with membership status
-class User {
+EagerSingleton* EagerSingleton :: instance = new EagerSingleton();
+
+
+class BillPughSingleton {
+private:
+    BillPughSingleton() {}
+
 public:
-    string name;
-    bool premiumMembership;
+
+    static BillPughSingleton* getInstance_type1() {
+        static BillPughSingleton instance;
+        return &instance;
+    }
+
+    static BillPughSingleton* getInstance_type2() {
+        static BillPughSingleton* instance = new BillPughSingleton() ;
+        return instance;
+    }
+
+};
+
+// No eager initialization , only when reqd.
+
+// Case A 
+// static BillPughSingleton instance;
+// return instance;
+// There is no pointer involved here.
+// instance is an actual object, not a pointer.
+// Lifetime: entire program
+// Destructor runs automatically at program exit
+// Memory is released by the C++ runtime / OS when the program ends.
+// So no pointer remains because there is no pointer at all.
+
+// Case : B
+// static BillPughSingleton* instance = new BillPughSingleton();
+// return instance;
+// instance is a pointer to a heap object.
+// Lifetime of heap object = until delete is called
+// Pointer itself (instance) has static lifetime (exists until program ends)
+// If you never call delete:
+// Object is never destroyed → memory leak
+// Pointer still exists (points to memory that is technically 
+// “freed” by OS at program exit, but destructor never ran)
+
+// note : local static variables are initialized the first time the 
+// function is called (lazy initialization).
+
+
+int main(){
+
     
-    User(string name, bool isPremium) {
-        this->name = name;
-        this->premiumMembership = isPremium;
-    }
-};
 
-// Proxy Class: Controls access to RealDocumentReader
-class DocumentProxy : public IDocumentReader {
-    RealDocumentReader* realReader;
-    User* user;
-    
-public:
-    DocumentProxy(User* user) {
-        realReader = new RealDocumentReader();
-        this->user = user;
-    }
 
-    void unlockPDF(string filePath, string password) override {
-        if (!user->premiumMembership) {
-            cout << "[DocumentProxy] Access denied. Only premium members can unlock PDFs.\n";
-            return;
-        }
-
-        // Forwarding the request to the real reader
-        realReader->unlockPDF(filePath, password);
-    }
-
-    ~DocumentProxy() {
-        delete realReader;
-    }
-};
-
-// Client code
-int main() {
-
-    User* user1 = new User("Rohan", false);  // Non Premium User
-    User* user2 = new User("Rashmi", true);  // premium user
-
-    cout << "== Rohan (Non-Premium) tries to unlock PDF ==\n";
-    IDocumentReader* docReader = new DocumentProxy(user1);
-    docReader->unlockPDF("protected_document.pdf", "secret123");
-    delete docReader;
-
-    cout << "\n== Rashmi (Premium) unlocks PDF ==\n";
-    docReader = new DocumentProxy(user2);
-    docReader->unlockPDF("protected_document.pdf", "secret123");
-    delete docReader;
-
-    return 0;
 }
+
+
+
+// g++ -std=c++17 main.cpp && ./a.out
