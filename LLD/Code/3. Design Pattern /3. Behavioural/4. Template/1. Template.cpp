@@ -74,7 +74,6 @@ protected:
 // 4. Usage
 // ───────────────────────────────────────────────────────────
 int main() {
-    
     cout << "=== Neural Network Training ===\n";
     ModelTrainer* nnTrainer = new NeuralNetworkTrainer();
     nnTrainer->trainPipeline("data/images/");
@@ -85,5 +84,3 @@ int main() {
 
     return 0;
 }
-
-// g++ -std=c++17 main.cpp && ./a.out

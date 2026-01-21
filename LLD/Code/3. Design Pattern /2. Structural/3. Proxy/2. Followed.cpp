@@ -13,6 +13,7 @@ public:
 
 class HighResolutionImage : public Image {
 private:
+
    string fileName;
    char* imageData;
 
